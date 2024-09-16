@@ -2,11 +2,12 @@
 //
 
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 void ClearInput();
 
-//Структура труба, её свойства и функции
+//Pipe structure
 struct Pipe
 {
     string Name;
@@ -15,6 +16,18 @@ struct Pipe
     bool InRepair;
 };
 
+
+//Compressor station structure
+struct CompressorStation
+{
+    string Name;
+    int AmountOfWorkshops;
+    int WorkshopsInWork;
+    int EfficiencyLevel;
+};
+
+
+//Functions of pipe
 Pipe CreatePipe()
 {
     Pipe p;
@@ -49,14 +62,6 @@ Pipe CreatePipe()
     return p;
 }
 
-void ClearInput()
-{
-    cout << "Entered incorrect value\n";
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); //https://stackoverflow.com/questions/19469627/c-how-do-i-remove-bad-input-from-cin
-}
-
-
 void PipeInformation(const Pipe& p)
 {
     cout << "Pipe name: " << p.Name << endl;
@@ -66,17 +71,81 @@ void PipeInformation(const Pipe& p)
     cout << "\n";
 }
 
-void EditInRepair(Pipe& p)
+void EditPipeInRepair(Pipe& p)
 {
     p.InRepair = !(p.InRepair);
 }
 
+
+//Functions of compressor station
+CompressorStation CreateCompressorStation()
+{
+    CompressorStation s;
+
+    cout << "Enter compressor station name: ";
+    cin >> s.Name;
+
+    cout << "Enter amount of compressor station workshops: ";
+    while (!(cin >> s.AmountOfWorkshops) || s.AmountOfWorkshops <= 0)
+    {
+        ClearInput();
+        cout << "Enter amount of compressor station workshops: ";
+    }
+
+    cout << "Enter amount of working compressor station workshops: ";
+    while (!(cin >> s.WorkshopsInWork) || s.WorkshopsInWork < 0 || s.WorkshopsInWork > s.AmountOfWorkshops)
+    {
+        ClearInput();
+        cout << "Enter amount of working compressor station workshops: ";
+    }
+
+    cout << "Enter effeciency level of compressor station: ";
+    while (!(cin >> s.EfficiencyLevel) || s.EfficiencyLevel < 0 || s.EfficiencyLevel > 100)
+    {
+        ClearInput();
+        cout << "Enter effeciency level of compressor station: ";
+    }
+    cout << "\n";
+    return s;
+}
+
+void CompressorStationInformation(const CompressorStation& s)
+{
+    cout << "Compressor station name: " << s.Name << endl;
+    cout << "Amount of compressor station workshops: " << s.AmountOfWorkshops << endl;
+    cout << "Amount of working compressor station workshops: " << s.WorkshopsInWork << endl;
+    cout << "Effeciency level of compressor station: " << s.EfficiencyLevel << "%" << endl;
+    cout << "\n";
+}
+
+void EditCompressorStationWorkhopsInWork(CompressorStation& s)
+{
+    int AddWorkshops;
+    cout << "Enter change of working workstations: ";
+    while (!(cin >> AddWorkshops) || (s.WorkshopsInWork + AddWorkshops) > s.AmountOfWorkshops
+        || (s.WorkshopsInWork + AddWorkshops) < 0 || AddWorkshops == 0)
+    {
+        ClearInput();
+        cout << "Enter change of working workstations: ";
+    }
+    s.WorkshopsInWork += AddWorkshops;
+}
+
+
+//Function for clear input
+void ClearInput()
+{
+    cout << "Entered incorrect value\n";
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); //https://stackoverflow.com/questions/19469627/c-how-do-i-remove-bad-input-from-cin
+}
+
 int main()
 {
-    Pipe p = CreatePipe();
-    PipeInformation(p);
-    EditInRepair(p);
-    PipeInformation(p);
+    CompressorStation s = CreateCompressorStation();
+    CompressorStationInformation(s);
+    EditCompressorStationWorkhopsInWork(s);
+    CompressorStationInformation(s);
     return 0;
 }
 
