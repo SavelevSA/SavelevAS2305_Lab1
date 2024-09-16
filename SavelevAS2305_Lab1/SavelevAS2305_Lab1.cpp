@@ -4,6 +4,7 @@
 #include <iostream>
 using namespace std;
 
+void ClearInput();
 
 //Структура труба, её свойства и функции
 struct Pipe
@@ -21,59 +22,61 @@ Pipe CreatePipe()
     cout << "Enter pipe name: ";
     cin >> p.Name;
 
-    cout << "Enter pipe Length: ";
-    cin >> p.Length;
 
-
-    //Как-то по-другому?
-    //Обязательно спросить про проверки
-    while (p.Length <= 0)
+    cout << "Enter pipe length: ";
+    while (!(cin >> p.Length) || p.Length <= 0)
     {
-        cout << "Entered incorrect value\n";
+        ClearInput();
         cout << "Enter pipe length: ";
-        cin.clear();
-        std::cin.ignore(numeric_limits<streamsize>::max(), '\n'); //https://stackoverflow.com/questions/19469627/c-how-do-i-remove-bad-input-from-cin
-        cin >> p.Length;
     }
+
 
     cout << "Enter pipe diameter: ";
-    cin >> p.Diameter;
-
-
-    while (p.Diameter <= 0)
+    while (!(cin >> p.Diameter) || p.Diameter <= 0)
     {
-        cout << "Entered incorrect value\n";
+        ClearInput();
         cout << "Enter pipe diameter: ";
-        cin.clear();
-        std::cin.ignore(numeric_limits<streamsize>::max(), '\n'); //https://stackoverflow.com/questions/19469627/c-how-do-i-remove-bad-input-from-cin
-        cin >> p.Diameter;
     }
 
+
     cout << "Set InRepair state: ";
-    cin >> p.InRepair;
-    //А вот тут сложно чего-то
+    while (!(cin >> p.InRepair))
+    {
+        ClearInput();
+        cout << "Set InRepair state: ";
+    }
+    cout << "\n";
     return p;
 }
 
-void PipeGetInformation(Pipe& p)
+void ClearInput()
+{
+    cout << "Entered incorrect value\n";
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); //https://stackoverflow.com/questions/19469627/c-how-do-i-remove-bad-input-from-cin
+}
+
+
+void PipeInformation(const Pipe& p)
 {
     cout << "Pipe name: " << p.Name << endl;
     cout << "Pipe length: " << p.Length << endl;
     cout << "Pipe diameter: " << p.Diameter << endl;
-    cout << "InRepair state: " << p.InRepair << endl;
+    cout << "InRepair state: ", (p.InRepair==1) ? (cout << "In repair\n") : (cout << "In work\n");
+    cout << "\n";
 }
 
 void EditInRepair(Pipe& p)
 {
-    p.InRepair = not(p.InRepair);
+    p.InRepair = !(p.InRepair);
 }
 
 int main()
 {
     Pipe p = CreatePipe();
-    PipeGetInformation(p);
+    PipeInformation(p);
     EditInRepair(p);
-    PipeGetInformation(p);
+    PipeInformation(p);
     return 0;
 }
 
