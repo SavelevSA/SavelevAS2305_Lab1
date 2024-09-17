@@ -1,7 +1,5 @@
-﻿// SavelevAS2305_Lab1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-#include <iostream>
+﻿#include <iostream>
+#include <fstream>
 using namespace std;
 
 void ClearInput();
@@ -149,17 +147,56 @@ void PrintMenu()
         << "4. Edit InRepair state of pipe" << endl
         << "5. Edit amount of working workshops of compressor station" << endl
         << "6. Save objects to file" << endl
-        << "7. Print objects from file" << endl
+        << "7. Load objects from file" << endl
         << "0. Exit" << endl
         << "Choose action: ";
 }
 
 
+//Function for save pipe and compessor station to file
+void SaveObjects(ofstream& fout, const Pipe& p, const CompressorStation& s)
+{
+    fout << p.Name << endl;
+    fout << p.Length << endl;
+    fout << p.Diameter << endl;
+    fout << p.InRepair << endl;
+    fout << s.Name << endl;
+    fout << s.AmountOfWorkshops << endl;
+    fout << s.WorkshopsInWork << endl;
+    fout << s.EfficiencyLevel << endl;
+}
+
+
+//Two functions that load pipe and compressor station from file
+Pipe LoadPipe(ifstream& fin)
+{
+    Pipe p;
+
+    fin >> p.Name;
+    fin >> p.Length;
+    fin >> p.Diameter;
+    fin >> p.InRepair;
+    
+    return p;
+}
+
+CompressorStation LoadCompressorStation(ifstream& fin)
+{
+    CompressorStation s;
+
+    fin >> s.Name;
+    fin >> s.AmountOfWorkshops;
+    fin >> s.WorkshopsInWork;
+    fin >> s.EfficiencyLevel;
+
+    return s;
+}
+
 
 int main()
 {
     Pipe p = { "None", 0, 0, 0 };
-    CompressorStation st = { "None", 0, 0, 0 };
+    CompressorStation s = { "None", 0, 0, 0 };
 
     while (1)
     {
@@ -176,22 +213,26 @@ int main()
 
         switch (MenuSelection)
         {
+            //Input pipe
             case 1:
             {
                 p = CreatePipe();
                 break;
             }
+            //Input compressor station
             case 2:
             {
-                st = CreateCompressorStation();
+                s = CreateCompressorStation();
                 break;
             }
+            //Print pipe and compressor station
             case 3:
             {
                 PipeInformation(p);
-                CompressorStationInformation(st);
+                CompressorStationInformation(s);
                 break;
             }
+            //Edit InRepair state of pipe
             case 4:
             {
                 if (p.Name != "None")
@@ -205,11 +246,12 @@ int main()
                     break;
                 }
             }
+            //Edit amount of working workshops of compressor station
             case 5:
             {
-                if (st.Name != "None")
+                if (s.Name != "None")
                 {
-                    EditCompressorStationWorkhopsInWork(st);
+                    EditCompressorStationWorkhopsInWork(s);
                     break;
                 }
                 else
@@ -218,16 +260,28 @@ int main()
                     break;
                 }
             }
+            //Save objects to file
             case 6:
             {
-                //...
+                ofstream fout;
+                fout.open("data.txt", ios::out);
+                SaveObjects(fout, p, s);
+                fout.close();
+                cout << "Data successfully saved" << endl << endl;
                 break;
             }
+            //Load objects from file
             case 7:
             {
-                //...
+                ifstream fin;
+                fin.open("data.txt", ios::in);
+                p = LoadPipe(fin);
+                s = LoadCompressorStation(fin);
+                fin.close();
+                cout << "Data successfully loaded" << endl << endl;
                 break;
             }
+            //Exit
             case 0:
             {
                 return 0;
