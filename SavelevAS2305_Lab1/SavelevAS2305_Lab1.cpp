@@ -2,7 +2,6 @@
 //
 
 #include <iostream>
-#include <cstdlib>
 using namespace std;
 
 void ClearInput();
@@ -74,6 +73,7 @@ void PipeInformation(const Pipe& p)
 void EditPipeInRepair(Pipe& p)
 {
     p.InRepair = !(p.InRepair);
+    cout << "Pipe InRepair state successfully changed" << "\n" << "\n";
 }
 
 
@@ -129,6 +129,7 @@ void EditCompressorStationWorkhopsInWork(CompressorStation& s)
         cout << "Enter change of working workstations: ";
     }
     s.WorkshopsInWork += AddWorkshops;
+    cout << "Amount of working workstations successfully edited" << "\n" << "\n";
 }
 
 
@@ -140,12 +141,103 @@ void ClearInput()
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); //https://stackoverflow.com/questions/19469627/c-how-do-i-remove-bad-input-from-cin
 }
 
+void PrintMenu()
+{
+    cout << "1. Input pipe" << endl
+        << "2. Input compressor station" << endl
+        << "3. Print pipe and compressor station" << endl
+        << "4. Edit InRepair state of pipe" << endl
+        << "5. Edit amount of working workshops of compressor station" << endl
+        << "6. Save objects to file" << endl
+        << "7. Print objects from file" << endl
+        << "0. Exit" << endl
+        << "Choose action: ";
+}
+
+
+
 int main()
 {
-    CompressorStation s = CreateCompressorStation();
-    CompressorStationInformation(s);
-    EditCompressorStationWorkhopsInWork(s);
-    CompressorStationInformation(s);
+    Pipe p = { "None", 0, 0, 0 };
+    CompressorStation st = { "None", 0, 0, 0 };
+
+    while (1)
+    {
+        PrintMenu();
+
+        int MenuSelection;
+
+        while (!(cin >> MenuSelection))
+        {
+            ClearInput();
+            PrintMenu();
+        }
+        cout << "\n";
+
+        switch (MenuSelection)
+        {
+            case 1:
+            {
+                p = CreatePipe();
+                break;
+            }
+            case 2:
+            {
+                st = CreateCompressorStation();
+                break;
+            }
+            case 3:
+            {
+                PipeInformation(p);
+                CompressorStationInformation(st);
+                break;
+            }
+            case 4:
+            {
+                if (p.Name != "None")
+                {
+                    EditPipeInRepair(p);
+                    break;
+                }
+                else
+                {
+                    cout << "Pipe does not exists" << endl << endl;
+                    break;
+                }
+            }
+            case 5:
+            {
+                if (st.Name != "None")
+                {
+                    EditCompressorStationWorkhopsInWork(st);
+                    break;
+                }
+                else
+                {
+                    cout << "Compressor station does not exists" << endl << endl;
+                    break;
+                }
+            }
+            case 6:
+            {
+                //...
+                break;
+            }
+            case 7:
+            {
+                //...
+                break;
+            }
+            case 0:
+            {
+                return 0;
+            }
+            default:
+            {
+                cout << "Wrong action" << endl << endl;
+            }
+        }
+    }
     return 0;
 }
 
