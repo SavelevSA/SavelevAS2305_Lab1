@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 void ClearInput();
@@ -30,7 +31,8 @@ Pipe CreatePipe()
     Pipe p;
 
     cout << "Enter pipe name: ";
-    cin >> p.Name;
+    cin >> ws;
+    getline(cin, p.Name);
 
 
     cout << "Enter pipe length: ";
@@ -64,7 +66,7 @@ void PipeInformation(const Pipe& p)
     cout << "Pipe name: " << p.Name << endl;
     cout << "Pipe length: " << p.Length << endl;
     cout << "Pipe diameter: " << p.Diameter << endl;
-    cout << "InRepair state: ", (p.InRepair==1) ? (cout << "In repair\n") : (cout << "In work\n");
+    cout << "InRepair state: " << (p.InRepair ? "In repair\n" :  "In work\n");
     cout << "\n";
 }
 
@@ -81,7 +83,8 @@ CompressorStation CreateCompressorStation()
     CompressorStation s;
 
     cout << "Enter compressor station name: ";
-    cin >> s.Name;
+    cin >> ws;
+    getline(cin, s.Name);
 
     cout << "Enter amount of compressor station workshops: ";
     while (!(cin >> s.AmountOfWorkshops) || s.AmountOfWorkshops <= 0)
@@ -154,16 +157,30 @@ void PrintMenu()
 
 
 //Function for save pipe and compessor station to file
-void SaveObjects(ofstream& fout, const Pipe& p, const CompressorStation& s)
+void SavePipe(ofstream& fout, const Pipe& p)
 {
-    fout << p.Name << endl;
-    fout << p.Length << endl;
-    fout << p.Diameter << endl;
-    fout << p.InRepair << endl;
-    fout << s.Name << endl;
-    fout << s.AmountOfWorkshops << endl;
-    fout << s.WorkshopsInWork << endl;
-    fout << s.EfficiencyLevel << endl;
+    string Marker = "Pipe";
+    if (p.Name == "None") fout << Marker << endl;
+    else
+    {
+        fout << p.Name << endl;
+        fout << p.Length << endl;
+        fout << p.Diameter << endl;
+        fout << p.InRepair << endl;
+    }
+}
+
+void SaveCompressorStation(ofstream& fout, const CompressorStation& s)
+{
+    string Marker = "CS";
+    if (s.Name == "None") fout << Marker << endl;
+    else
+    {
+        fout << s.Name << endl;
+        fout << s.AmountOfWorkshops << endl;
+        fout << s.WorkshopsInWork << endl;
+        fout << s.EfficiencyLevel << endl;
+    }
 }
 
 
@@ -172,24 +189,39 @@ Pipe LoadPipe(ifstream& fin)
 {
     Pipe p;
 
-    fin >> p.Name;
-    fin >> p.Length;
-    fin >> p.Diameter;
-    fin >> p.InRepair;
-    
-    return p;
+    string Marker;
+    fin >> ws;
+    getline(fin, Marker);
+    if (Marker == "Pipe") return p = { "None", 0, 0, 0 };
+    else
+    {
+        p.Name = Marker;
+        fin >> p.Length;
+        fin >> p.Diameter;
+        fin >> p.InRepair;
+
+        return p;
+    }
 }
 
 CompressorStation LoadCompressorStation(ifstream& fin)
 {
     CompressorStation s;
 
-    fin >> s.Name;
-    fin >> s.AmountOfWorkshops;
-    fin >> s.WorkshopsInWork;
-    fin >> s.EfficiencyLevel;
 
-    return s;
+    string Marker;
+    fin >> ws;
+    getline(fin, Marker);
+    if (Marker == "CS") return s = { "None", 0, 0, 0 };
+    else
+    {
+        s.Name = Marker;
+        fin >> s.AmountOfWorkshops;
+        fin >> s.WorkshopsInWork;
+        fin >> s.EfficiencyLevel;
+
+        return s;
+    }
 }
 
 
@@ -228,8 +260,10 @@ int main()
             //Print pipe and compressor station
             case 3:
             {
-                PipeInformation(p);
-                CompressorStationInformation(s);
+                if (p.Name == "None") cout << "Pipe does not exists" << endl << endl;
+                else PipeInformation(p);
+                if (s.Name == "None") cout << "Compressor station does not exists" << endl << endl;
+                else CompressorStationInformation(s);
                 break;
             }
             //Edit InRepair state of pipe
@@ -265,9 +299,13 @@ int main()
             {
                 ofstream fout;
                 fout.open("data.txt", ios::out);
-                SaveObjects(fout, p, s);
-                fout.close();
-                cout << "Data successfully saved" << endl << endl;
+                if (fout.is_open())
+                {
+                    SavePipe(fout, p);
+                    SaveCompressorStation(fout, s);
+                    fout.close();
+                    cout << "Data successfully saved" << endl << endl;
+                }
                 break;
             }
             //Load objects from file
@@ -275,10 +313,13 @@ int main()
             {
                 ifstream fin;
                 fin.open("data.txt", ios::in);
-                p = LoadPipe(fin);
-                s = LoadCompressorStation(fin);
-                fin.close();
-                cout << "Data successfully loaded" << endl << endl;
+                if (fin.is_open())
+                {
+                    p = LoadPipe(fin);
+                    s = LoadCompressorStation(fin);
+                    fin.close();
+                    cout << "Data successfully loaded" << endl << endl;
+                }
                 break;
             }
             //Exit
