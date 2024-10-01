@@ -1,19 +1,11 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
-using namespace std;
+#include "Pipe.h"
 
 void ClearInput();
 
-//Pipe structure
-struct Pipe
-{
-    string Name;
-    int Length;
-    int Diameter;
-    bool InRepair;
-};
-
+using namespace std;
 
 //Compressor station structure
 struct CompressorStation
@@ -23,58 +15,6 @@ struct CompressorStation
     int WorkshopsInWork;
     int EfficiencyLevel;
 };
-
-
-//Functions of pipe
-Pipe CreatePipe()
-{
-    Pipe p;
-
-    cout << "Enter pipe name: ";
-    cin >> ws;
-    getline(cin, p.Name);
-
-
-    cout << "Enter pipe length: ";
-    while (!(cin >> p.Length) || p.Length <= 0)
-    {
-        ClearInput();
-        cout << "Enter pipe length: ";
-    }
-
-
-    cout << "Enter pipe diameter: ";
-    while (!(cin >> p.Diameter) || p.Diameter <= 0)
-    {
-        ClearInput();
-        cout << "Enter pipe diameter: ";
-    }
-
-
-    cout << "Set InRepair state: ";
-    while (!(cin >> p.InRepair))
-    {
-        ClearInput();
-        cout << "Set InRepair state: ";
-    }
-    cout << "\n";
-    return p;
-}
-
-void PipeInformation(const Pipe& p)
-{
-    cout << "Pipe name: " << p.Name << endl;
-    cout << "Pipe length: " << p.Length << endl;
-    cout << "Pipe diameter: " << p.Diameter << endl;
-    cout << "InRepair state: " << (p.InRepair ? "In repair\n" :  "In work\n");
-    cout << "\n";
-}
-
-void EditPipeInRepair(Pipe& p)
-{
-    p.InRepair = !(p.InRepair);
-    cout << "Pipe InRepair state successfully changed" << "\n" << "\n";
-}
 
 
 //Functions of compressor station
@@ -134,14 +74,6 @@ void EditCompressorStationWorkhopsInWork(CompressorStation& s)
 }
 
 
-//Function for clear input
-void ClearInput()
-{
-    cout << "Entered incorrect value\n";
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); //https://stackoverflow.com/questions/19469627/c-how-do-i-remove-bad-input-from-cin
-}
-
 void PrintMenu()
 {
     cout << "1. Input pipe" << endl
@@ -155,52 +87,17 @@ void PrintMenu()
         << "Choose action: ";
 }
 
-
-//Function for save pipe and compessor station to file
-void SavePipe(ofstream& fout, const Pipe& p)
-{
-    string Marker = "Pipe";
-    if (p.Name == "None") fout << Marker << endl;
-    else
-    {
-        fout << p.Name << endl;
-        fout << p.Length << endl;
-        fout << p.Diameter << endl;
-        fout << p.InRepair << endl;
-    }
-}
-
 void SaveCompressorStation(ofstream& fout, const CompressorStation& s)
 {
-    string Marker = "CS";
+    string Marker = "-";
     if (s.Name == "None") fout << Marker << endl;
     else
     {
+        fout << "CS" << endl;
         fout << s.Name << endl;
         fout << s.AmountOfWorkshops << endl;
         fout << s.WorkshopsInWork << endl;
         fout << s.EfficiencyLevel << endl;
-    }
-}
-
-
-//Two functions that load pipe and compressor station from file
-Pipe LoadPipe(ifstream& fin)
-{
-    Pipe p;
-
-    string Marker;
-    fin >> ws;
-    getline(fin, Marker);
-    if (Marker == "Pipe") return p = { "None", 0, 0, 0 };
-    else
-    {
-        p.Name = Marker;
-        fin >> p.Length;
-        fin >> p.Diameter;
-        fin >> p.InRepair;
-
-        return p;
     }
 }
 
@@ -212,10 +109,10 @@ CompressorStation LoadCompressorStation(ifstream& fin)
     string Marker;
     fin >> ws;
     getline(fin, Marker);
-    if (Marker == "CS") return s = { "None", 0, 0, 0 };
-    else
+    if (Marker == "-") return s = { "None", 0, 0, 0 };
+    else if (Marker == "CS")
     {
-        s.Name = Marker;
+        fin >> s.Name;
         fin >> s.AmountOfWorkshops;
         fin >> s.WorkshopsInWork;
         fin >> s.EfficiencyLevel;
@@ -227,7 +124,7 @@ CompressorStation LoadCompressorStation(ifstream& fin)
 
 int main()
 {
-    Pipe p = { "None", 0, 0, 0 };
+    Pipe p;
     CompressorStation s = { "None", 0, 0, 0 };
 
     while (1)
@@ -248,7 +145,7 @@ int main()
             //Input pipe
             case 1:
             {
-                p = CreatePipe();
+                cin >> p;
                 break;
             }
             //Input compressor station
@@ -260,8 +157,7 @@ int main()
             //Print pipe and compressor station
             case 3:
             {
-                if (p.Name == "None") cout << "Pipe does not exists" << endl << endl;
-                else PipeInformation(p);
+                cout << p;
                 if (s.Name == "None") cout << "Compressor station does not exists" << endl << endl;
                 else CompressorStationInformation(s);
                 break;
@@ -269,16 +165,8 @@ int main()
             //Edit InRepair state of pipe
             case 4:
             {
-                if (p.Name != "None")
-                {
-                    EditPipeInRepair(p);
-                    break;
-                }
-                else
-                {
-                    cout << "Pipe does not exists" << endl << endl;
-                    break;
-                }
+                p.EditPipeInRepair(p);
+                break;
             }
             //Edit amount of working workshops of compressor station
             case 5:
@@ -301,7 +189,7 @@ int main()
                 fout.open("data.txt", ios::out);
                 if (fout.is_open())
                 {
-                    SavePipe(fout, p);
+                    fout << p;
                     SaveCompressorStation(fout, s);
                     fout.close();
                     cout << "Data successfully saved" << endl << endl;
@@ -315,7 +203,7 @@ int main()
                 fin.open("data.txt", ios::in);
                 if (fin.is_open())
                 {
-                    p = LoadPipe(fin);
+                    fin >> p;
                     s = LoadCompressorStation(fin);
                     fin.close();
                     cout << "Data successfully loaded" << endl << endl;
