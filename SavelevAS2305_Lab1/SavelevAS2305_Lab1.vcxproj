@@ -129,10 +129,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CompressorStation.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="SavelevAS2305_Lab1.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CompressorStation.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

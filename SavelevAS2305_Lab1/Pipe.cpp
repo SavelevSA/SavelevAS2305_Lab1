@@ -2,11 +2,11 @@
 #include "Utils.h"
 using namespace std;
 
-//int Pipe::PipeID = 0;
+int Pipe::PipeID = 0;
 
 Pipe::Pipe()
 {
-    //id = PipeID++;
+    id = PipeID++;
     Name = "None";
     Length = 0;
     Diameter = 0;
@@ -47,6 +47,7 @@ ofstream& operator << (ofstream& fout, const Pipe& p)
 
 istream& operator >> (istream& in, Pipe& p)
 {
+    p.id++;
     cout << "Enter pipe name: ";
     in >> ws;
     getline(in, p.Name);
@@ -83,7 +84,8 @@ ostream& operator << (ostream& out, const Pipe& p)
     if (p.Name == "None") cout << "Pipe does not exists" << endl << endl;
     else
     {
-        out << "Pipe name: " << p.Name << endl
+        out << "ID: " << p.id << endl
+            << "Pipe name: " << p.Name << endl
             << "Pipe length: " << p.Length << endl
             << "Pipe diameter : " << p.Diameter << endl
             << "InRepair state: " << (p.InRepair ? "In repair\n" : "In work\n") << endl;
@@ -91,11 +93,11 @@ ostream& operator << (ostream& out, const Pipe& p)
     }
 }
 
-void Pipe::EditPipeInRepair(Pipe& p)
+void Pipe::EditPipeInRepair()
 {
-    if (p.Name != "None")
+    if (Name != "None")
     {
-        p.InRepair = !(p.InRepair);
+        InRepair = !(InRepair);
         cout << "Pipe InRepair state successfully changed" << "\n" << "\n";
     }
     else cout << "Pipe does not exists" << endl << endl;;
