@@ -15,32 +15,25 @@ CompressorStation::CompressorStation()
 
 ifstream& operator >> (ifstream& fin, CompressorStation& s)
 {
-    string Marker;
+    fin >> s.id;
     fin >> ws;
-    getline(fin, Marker);
-    if (Marker == "-") return fin;
-    else if (Marker == "CS")
-    {
-        fin >> s.Name;
-        fin >> s.AmountOfWorkshops;
-        fin >> s.WorkshopsInWork;
-        fin >> s.EfficiencyLevel;
+    getline(fin, s.Name);
+    fin >> s.AmountOfWorkshops;
+    fin >> s.WorkshopsInWork;
+    fin >> s.EfficiencyLevel;
 
-        return fin;
-    }
+    return fin;
 }
 
 ofstream& operator << (ofstream& fout, const CompressorStation& s)
 {
-    string Marker = "-";
-    if (s.Name == "None") fout << Marker << endl;
-    else
+    if (s.Name != "None");
     {
-        fout << "CS" << endl;
-        fout << s.Name << endl;
-        fout << s.AmountOfWorkshops << endl;
-        fout << s.WorkshopsInWork << endl;
-        fout << s.EfficiencyLevel << endl;
+        fout << s.id << endl
+        << s.Name << endl
+        << s.AmountOfWorkshops << endl
+        << s.WorkshopsInWork << endl
+        << s.EfficiencyLevel << endl;
     }
     return fout;
 }
@@ -77,17 +70,14 @@ istream& operator >> (istream& in, CompressorStation& s)
 
 ostream& operator << (ostream& out, const CompressorStation& s)
 {
-    if (s.Name == "None") cout << "Compressor station does not exists" << endl << endl;
-    else
-    {
-        out << "Compressor station name: " << s.Name << endl
-        << "Amount of compressor station workshops: " << s.AmountOfWorkshops << endl
-        << "Amount of working compressor station workshops: " << s.WorkshopsInWork << endl
-        << "Effeciency level of compressor station: " << s.EfficiencyLevel << "%" << endl
-        << "\n";
-        return out;
-    }
+    out << "Compressor station name: " << s.Name << endl
+    << "Amount of compressor station workshops: " << s.AmountOfWorkshops << endl
+    << "Amount of working compressor station workshops: " << s.WorkshopsInWork << endl
+    << "Effeciency level of compressor station: " << s.EfficiencyLevel << "%" << endl
+    << "\n";
+    return out;
 }
+
 
 void CompressorStation::EditCompressorStationWorkhopsInWork()
 {
@@ -102,3 +92,10 @@ void CompressorStation::EditCompressorStationWorkhopsInWork()
     WorkshopsInWork += AddWorkshops;
     cout << "Amount of working workstations successfully edited" << "\n" << "\n";
 }
+
+int CompressorStation::GetId()
+{
+    return id;
+}
+
+

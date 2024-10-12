@@ -13,34 +13,28 @@ Pipe::Pipe()
     InRepair = 0;
 }
 
+
 ifstream& operator >> (ifstream& fin, Pipe& p)
 {
-    string Marker;
+    fin >> p.id;
     fin >> ws;
-    getline(fin, Marker);
-    if (Marker == "-") return fin;
-    else if (Marker == "Pipe")
-    {
-        fin >> p.Name;
-        fin >> p.Length;
-        fin >> p.Diameter;
-        fin >> p.InRepair;
+    getline(fin, p.Name);
+    fin >> p.Length;
+    fin >> p.Diameter;
+    fin >> p.InRepair;
 
-        return fin;
-    }
+    return fin;
 }
 
 ofstream& operator << (ofstream& fout, const Pipe& p)
 {
-    string Marker = "-";
-    if (p.Name == "None") fout << Marker << endl;
-    else
+    if (p.Name != "None");
     {
-        fout << "Pipe" << endl;
-        fout << p.Name << endl;
-        fout << p.Length << endl;
-        fout << p.Diameter << endl;
-        fout << p.InRepair << endl;
+        fout << p.id << endl
+        << p.Name << endl
+        << p.Length << endl
+        << p.Diameter << endl
+        << p.InRepair << endl;
     }
     return fout;
 }
@@ -81,17 +75,14 @@ istream& operator >> (istream& in, Pipe& p)
 
 ostream& operator << (ostream& out, const Pipe& p)
 {
-    if (p.Name == "None") cout << "Pipe does not exists" << endl << endl;
-    else
-    {
-        out << "ID: " << p.id << endl
-            << "Pipe name: " << p.Name << endl
-            << "Pipe length: " << p.Length << endl
-            << "Pipe diameter : " << p.Diameter << endl
-            << "InRepair state: " << (p.InRepair ? "In repair\n" : "In work\n") << endl;
-        return out;
-    }
+    out << "ID: " << p.id << endl
+        << "Pipe name: " << p.Name << endl
+        << "Pipe length: " << p.Length << endl
+        << "Pipe diameter : " << p.Diameter << endl
+        << "InRepair state: " << (p.InRepair ? "In repair\n" : "In work\n") << endl;
+    return out;
 }
+
 
 void Pipe::EditPipeInRepair()
 {
@@ -103,3 +94,7 @@ void Pipe::EditPipeInRepair()
     else cout << "Pipe does not exists" << endl << endl;;
 }
 
+int Pipe::GetId()
+{
+    return id;
+}

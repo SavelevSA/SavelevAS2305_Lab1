@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <istream>
+#include <unordered_map>
 
 class CompressorStation
 {
@@ -17,11 +18,13 @@ public:
 
 	CompressorStation();
 
+	int GetId();
 	void EditCompressorStationWorkhopsInWork();
-	friend std::ifstream& operator >> (std::ifstream& fin, CompressorStation& p);
-	friend std::ofstream& operator << (std::ofstream& fout, const CompressorStation& p);
 
-	friend std::istream& operator >> (std::istream& in, CompressorStation& p);
-	friend std::ostream& operator << (std::ostream& out, const CompressorStation& p);
+	friend std::ifstream& operator >> (std::ifstream& fin, CompressorStation& s);
+	friend std::ofstream& operator << (std::ofstream& fout, const CompressorStation& s);
+
+	friend std::istream& operator >> (std::istream& in, CompressorStation& s);
+	friend std::ostream& operator << (std::ostream& out, const CompressorStation& s);
 
 };

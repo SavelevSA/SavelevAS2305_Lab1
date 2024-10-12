@@ -1,9 +1,7 @@
-﻿#include <iostream>
-#include <fstream>
-#include <string>
-#include "Pipe.h"
+﻿#include "Pipe.h"
 #include "CompressorStation.h"
 #include "Utils.h"
+#include "InputAndOutput.h"
 
 using namespace std;
 
@@ -20,11 +18,19 @@ void PrintMenu()
         << "Choose action: ";
 }
 
+void PipeMenu()
+{
+    cout << "1. Create pipe" << endl;
+}
+
 
 int main()
 {
     Pipe p;
     CompressorStation s;
+
+    unordered_map<int, Pipe> Pipes;
+    unordered_map<int, CompressorStation> Stations;
 
     while (1)
     {
@@ -44,20 +50,20 @@ int main()
             //Input pipe
             case 1:
             {
-                cin >> p;
+                CreatePipe(Pipes);
                 break;
             }
             //Input compressor station
             case 2:
             {
-                cin >> s;
+                CreateCompressorStation(Stations);
                 break;
             }
             //Print pipe and compressor station
             case 3:
             {
-                cout << p;
-                cout << s;
+                PrintPipes(Pipes);
+                PrintCompressorStations(Stations);
                 break;
             }
             //Edit InRepair state of pipe
@@ -75,29 +81,13 @@ int main()
             //Save objects to file
             case 6:
             {
-                ofstream fout;
-                fout.open("data.txt", ios::out);
-                if (fout.is_open())
-                {
-                    fout << p;
-                    fout << s;
-                    fout.close();
-                    cout << "Data successfully saved" << endl << endl;
-                }
+                SaveToFile(Pipes, Stations);
                 break;
             }
             //Load objects from file
             case 7:
             {
-                ifstream fin;
-                fin.open("data.txt", ios::in);
-                if (fin.is_open())
-                {
-                    fin >> p;
-                    fin >> s;
-                    fin.close();
-                    cout << "Data successfully loaded" << endl << endl;
-                }
+                LoadFromFile(Pipes, Stations);
                 break;
             }
             //Exit
