@@ -87,12 +87,7 @@ ostream& operator << (ostream& out, const Pipe& p)
 
 void Pipe::EditPipeInRepair()
 {
-    if (Name != "None")
-    {
-        InRepair = !(InRepair);
-        cout << "Pipe InRepair state successfully changed" << "\n" << "\n";
-    }
-    else cout << "Pipe does not exists" << endl << endl;;
+    InRepair = !(InRepair);
 }
 
 int Pipe::GetId()

@@ -21,7 +21,12 @@ void MainMenu()
 void PipeMenu()
 {
     cout << "1. Create pipe" << endl
-        << "2. Filter pipes" << endl
+        << "2. Choose pipes with filter" << endl
+        << "3. Choose pipe" << endl
+        << "4. Print choosed pipes" << endl
+        << "5. Delete choosed pipes" << endl
+        << "6. Clear choosed pipes" << endl
+        << "7. Edit InRepair statement of choosed pipes" << endl
         << "0. Back" << endl
         << "Choose action: ";
 }
@@ -29,7 +34,13 @@ void PipeMenu()
 void StationMenu()
 {
     cout << "1. Create station" << endl
-        << "2. Filter stations" << endl
+        << "2. Choose stations with filter" << endl
+        << "3. Choose station" << endl
+        << "4. Print choosed stations" << endl
+        << "5. Delete choosed pipes" << endl
+        << "6. Clear choosed stations" << endl
+        << "7. +1 working worksop to choosed stations" << endl
+        << "8. -1 working worksop to choosed stations" << endl
         << "0. Back" << endl
         << "Choose action: ";
 }
@@ -58,7 +69,7 @@ int main()
                 {
                     PipeMenu();
                     int PipeSelection;
-                    PipeSelection = GetCorrectNumber(0, 2);
+                    PipeSelection = GetCorrectNumber(0, 7);
 
                     if (PipeSelection == 0)
                         break;
@@ -69,6 +80,21 @@ int main()
                             break;
                         case 2:
                             FilterPipes(Pipes, FilteredPipes);
+                            break;
+                        case 3:
+                            ChoosePipe(FilteredPipes, Pipes);
+                            break;
+                        case 4:
+                            PrintPipes(FilteredPipes);
+                            break;
+                        case 5:
+                            DeletePipes(FilteredPipes, Pipes);
+                            break;
+                        case 6:
+                            ClearChoosedPipes(FilteredPipes);
+                            break;
+                        case 7:
+                            EditPipes(FilteredPipes, Pipes);
                             break;
                         default:
                             cout << "Wrong action" << endl << endl;
@@ -83,7 +109,7 @@ int main()
                 {
                     StationMenu();
                     int StationSelection;
-                    StationSelection = GetCorrectNumber(0, 2);
+                    StationSelection = GetCorrectNumber(0, 6);
 
                     if (StationSelection == 0)
                         break;
@@ -94,6 +120,24 @@ int main()
                         break;
                     case 2:
                         FilterStations(Stations, FilteredStations);
+                        break;
+                    case 3:
+                        ChooseStation(FilteredStations, Stations);
+                        break;
+                    case 4:
+                        PrintCompressorStations(FilteredStations);
+                        break;
+                    case 5:
+                        DeleteStations(FilteredStations, Stations);
+                        break;
+                    case 6:
+                        ClearChoosedStations(FilteredStations);
+                        break;
+                    case 7:
+                        EditStations(FilteredStations, Stations, char("+"));
+                        break;
+                    case 8:
+                        EditStations(FilteredStations, Stations, char("-"));
                         break;
                     default:
                         cout << "Wrong action" << endl << endl;
@@ -111,13 +155,13 @@ int main()
             //Edit InRepair state of pipe
             case 4:
             {
-                p.EditPipeInRepair();
+                //p.EditPipeInRepair();
                 break;
             }
             //Edit amount of working workshops of compressor station
             case 5:
             {
-                s.EditCompressorStationWorkhopsInWork();
+                //s.EditCompressorStationWorkhopsInWork();
                 break;
             }
             //Save objects to file

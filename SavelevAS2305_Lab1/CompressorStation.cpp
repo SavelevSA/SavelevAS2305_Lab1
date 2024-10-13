@@ -82,18 +82,12 @@ ostream& operator << (ostream& out, const CompressorStation& s)
 }
 
 
-void CompressorStation::EditCompressorStationWorkhopsInWork()
+void CompressorStation::EditWorkingWorkshops(const char sign)
 {
-    int AddWorkshops;
-    cout << "Enter change of working workstations: ";
-    while (!(cin >> AddWorkshops) || (WorkshopsInWork + AddWorkshops) > AmountOfWorkshops
-        || (WorkshopsInWork + AddWorkshops) < 0 || AddWorkshops == 0)
-    {
-        ClearInput();
-        cout << "Enter change of working workstations: ";
-    }
-    WorkshopsInWork += AddWorkshops;
-    cout << "Amount of working workstations successfully edited" << "\n" << "\n";
+    if (sign == char("+") && WorkshopsInWork + 1 <= AmountOfWorkshops)
+        WorkshopsInWork += 1;
+    else if (sign == char("-") && WorkshopsInWork - 1 >= 0)
+        WorkshopsInWork -= 1;
 }
 
 int CompressorStation::GetId()

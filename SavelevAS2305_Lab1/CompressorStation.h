@@ -25,7 +25,7 @@ public:
 	int GetWorkingWorkhops();
 	int GetPercent();
 
-	void EditCompressorStationWorkhopsInWork();
+	void EditWorkingWorkshops(const char sign);
 
 	friend std::ifstream& operator >> (std::ifstream& fin, CompressorStation& s);
 	friend std::ofstream& operator << (std::ofstream& fout, const CompressorStation& s);
