@@ -2,11 +2,11 @@
 #include "Utils.h"
 using namespace std;
 
-//int CompressorStation::CSID = 0;
+int CompressorStation::maxId = 0;
 
 CompressorStation::CompressorStation()
 {
-    //id = CSID++;
+    id = 0;
     Name = "None";
     AmountOfWorkshops = 0;
     WorkshopsInWork = 0;
@@ -16,6 +16,7 @@ CompressorStation::CompressorStation()
 ifstream& operator >> (ifstream& fin, CompressorStation& s)
 {
     fin >> s.id;
+    s.maxId = s.id;
     fin >> ws;
     getline(fin, s.Name);
     fin >> s.AmountOfWorkshops;
@@ -40,6 +41,7 @@ ofstream& operator << (ofstream& fout, const CompressorStation& s)
 
 istream& operator >> (istream& in, CompressorStation& s)
 {
+    s.id = ++s.maxId;
     cout << "Enter compressor station name: ";
     in >> ws;
     getline(in, s.Name);
@@ -70,7 +72,8 @@ istream& operator >> (istream& in, CompressorStation& s)
 
 ostream& operator << (ostream& out, const CompressorStation& s)
 {
-    out << "Compressor station name: " << s.Name << endl
+    out << "ID: " << s.id << endl
+    << "Compressor station name: " << s.Name << endl
     << "Amount of compressor station workshops: " << s.AmountOfWorkshops << endl
     << "Amount of working compressor station workshops: " << s.WorkshopsInWork << endl
     << "Effeciency level of compressor station: " << s.EfficiencyLevel << "%" << endl
@@ -98,4 +101,22 @@ int CompressorStation::GetId()
     return id;
 }
 
+string CompressorStation::GetName()
+{
+    return Name;
+}
 
+int CompressorStation::GetWorkhops()
+{
+    return AmountOfWorkshops;
+}
+
+int CompressorStation::GetWorkingWorkhops()
+{
+    return WorkshopsInWork;
+}
+
+int CompressorStation::GetPercent()
+{
+    return (AmountOfWorkshops - WorkshopsInWork) * 100 / (AmountOfWorkshops);
+}

@@ -2,11 +2,11 @@
 #include "Utils.h"
 using namespace std;
 
-int Pipe::PipeID = 0;
+int Pipe::maxId = 0;
 
 Pipe::Pipe()
 {
-    id = PipeID++;
+    id = 0;
     Name = "None";
     Length = 0;
     Diameter = 0;
@@ -17,6 +17,7 @@ Pipe::Pipe()
 ifstream& operator >> (ifstream& fin, Pipe& p)
 {
     fin >> p.id;
+    p.maxId = p.id;
     fin >> ws;
     getline(fin, p.Name);
     fin >> p.Length;
@@ -41,7 +42,7 @@ ofstream& operator << (ofstream& fout, const Pipe& p)
 
 istream& operator >> (istream& in, Pipe& p)
 {
-    p.id++;
+    p.id = ++p.maxId;
     cout << "Enter pipe name: ";
     in >> ws;
     getline(in, p.Name);
@@ -97,4 +98,14 @@ void Pipe::EditPipeInRepair()
 int Pipe::GetId()
 {
     return id;
+}
+
+string Pipe::GetName()
+{
+    return Name;
+}
+
+bool Pipe::GetStatement()
+{
+    return InRepair;
 }

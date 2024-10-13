@@ -8,18 +8,20 @@
 class Pipe
 {
 private:
+	static int maxId;
+	int id;
 	std::string Name;
 	int Length;
 	int Diameter;
-	static int PipeID;
-	int id;
+	bool InRepair;
 	
 public:
-	bool InRepair;
-
 	Pipe();
 
 	int GetId();
+	std::string GetName();
+	bool GetStatement();
+
 	void EditPipeInRepair();
 
 	friend std::ifstream& operator >> (std::ifstream& fin, Pipe& p);

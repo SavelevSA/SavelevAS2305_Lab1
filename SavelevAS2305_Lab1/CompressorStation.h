@@ -8,17 +8,23 @@
 class CompressorStation
 {
 private:
+	static int maxId;
+	int id;
 	std::string Name;
 	int AmountOfWorkshops;
 	int WorkshopsInWork;
 	int EfficiencyLevel;
-	int id;
 
 public:
 
 	CompressorStation();
 
 	int GetId();
+	std::string GetName();
+	int GetWorkhops();
+	int GetWorkingWorkhops();
+	int GetPercent();
+
 	void EditCompressorStationWorkhopsInWork();
 
 	friend std::ifstream& operator >> (std::ifstream& fin, CompressorStation& s);
