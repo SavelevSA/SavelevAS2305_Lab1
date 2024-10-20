@@ -19,7 +19,7 @@ void PrintPipes(const unordered_map<int, Pipe>& Pipes)
 {
     if (Pipes.size() == 0)
     {
-        cout << "There is no pipes" << endl << endl;
+        cout << "There is no pipes" << endl;
     }
     else
     {
@@ -44,7 +44,7 @@ void PrintCompressorStations(const unordered_map<int, CompressorStation>& Statio
 {
     if (Stations.size() == 0)
     {
-        cout << "There is no stations" << endl << endl;
+        cout << "There is no stations" << endl;
     }
     else
     {
@@ -62,8 +62,7 @@ void SaveToFile(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, 
     string file;
 
     cout << "Enter name of file to save: ";
-    cin >> ws;
-    getline(cin, file);
+    INPUT_LINE(cin, file);
     cout << endl;
 
     fout.open(file);
@@ -84,7 +83,7 @@ void SaveToFile(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, 
         }
 
         fout.close();
-        cout << "Data successfully saved" << endl << endl;
+        cout << "Data successfully saved" << endl;
     }
 }
 
@@ -117,8 +116,7 @@ void LoadFromFile(unordered_map<int, Pipe>& Pipes, unordered_map<int, Compressor
     string file;
 
     cout << "Enter name of file to load from: ";
-    cin >> ws;
-    getline(cin, file);
+    INPUT_LINE(cin, file);
     cout << endl;
 
     fin.open(file);
@@ -135,5 +133,5 @@ void LoadFromFile(unordered_map<int, Pipe>& Pipes, unordered_map<int, Compressor
         LoadCompressorStation(Stations, CountOfCS, fin);
     }
     fin.close();
-    cout << "Data successfully loaded" << endl << endl;
+    cout << "Data successfully loaded" << endl;
 }

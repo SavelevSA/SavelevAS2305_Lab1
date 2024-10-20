@@ -6,21 +6,33 @@
 #include "CompressorStation.h"
 #include "InputAndOutput.h"
 
-void ClearInput();
+#define INPUT_LINE(in, str) getline(in >> std::ws, str); \
+							std::cerr << str << std::endl
+
+class redirect_output_wrapper
+{
+	std::ostream& stream;
+	std::streambuf* const old_buf;
+public:
+	redirect_output_wrapper(std::ostream& src)
+		:old_buf(src.rdbuf()), stream(src)
+	{
+	}
+	~redirect_output_wrapper() {
+		stream.rdbuf(old_buf);
+	}
+	void redirect(std::ostream& dest)
+	{
+		stream.rdbuf(dest.rdbuf());
+	}
+};
+
 void MainMenu();
 void PipeMenu();
 void StationMenu();
 
 template <typename T>
 T GetCorrectNumber(T min, T max);
-
-//std::unordered_map<int, CompressorStation> FilterStations(std::unordered_map<int, CompressorStation>& UnfilteredStations, std::unordered_map<int, CompressorStation>& FilterdStations);
-//
-//std::unordered_map<int, CompressorStation> EditStations(std::unordered_map<int, CompressorStation>& ChoosedStations, std::unordered_map<int, CompressorStation>& Stations, const char sign);
-//
-//std::unordered_map<int, CompressorStation> ChooseStation(std::unordered_map<int, CompressorStation>& ChoosedStations, std::unordered_map<int, CompressorStation>& Stations);
-//
-//std::unordered_map<int, CompressorStation> DeleteStations(std::unordered_map<int, CompressorStation>& ChoosedStations, std::unordered_map<int, CompressorStation>& Stations);
 
 void ClearChoosedPipes(std::set<int>& PipeIds);
 void ClearChoosedStations(std::set<int>& StationIds);

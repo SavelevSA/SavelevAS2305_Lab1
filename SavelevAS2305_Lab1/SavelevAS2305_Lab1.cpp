@@ -2,18 +2,26 @@
 #include "CompressorStation.h"
 #include "Utils.h"
 #include "InputAndOutput.h"
-
+#include <chrono>
+#include <format>
 using namespace std;
 
 int main()
 {
+    redirect_output_wrapper cerr_out(cerr);
+    string time = format("{:%d_%m_%Y %H_%M_%OS}", chrono::system_clock::now());
+    ofstream logfile("log_" + time);
+    if (logfile)
+        cerr_out.redirect(logfile);
+
+
     unordered_map<int, Pipe> Pipes;
     unordered_map<int, CompressorStation> Stations;
 
     while (1)
     {
         MainMenu();
-        switch (GetCorrectNumber(0, 7))
+        switch (GetCorrectNumber(0, 5))
         {
         case 1:
         {
@@ -30,7 +38,7 @@ int main()
             {
                 if (Pipes.empty())
                 {
-                    cout << "There is no pipes to interact with" << endl << endl;
+                    cout << "There is no pipes to interact with" << endl;
                 }
                 else
                     ChooseAndFilterPipes(Pipes);
@@ -57,7 +65,7 @@ int main()
             {
                 if (Stations.empty())
                 {
-                    cout << "There is no stations to interact with" << endl << endl;
+                    cout << "There is no stations to interact with" << endl;
                 }
                 else
                     ChooseAndFilterStations(Stations);
@@ -68,33 +76,18 @@ int main()
             }
         break;
         }
-            //Print pipe and compressor station
             case 3:
             {
                 PrintPipes(Pipes);
                 PrintCompressorStations(Stations);
                 break;
             }
-            //Edit InRepair state of pipe
             case 4:
-            {
-                //p.EditPipeInRepair();
-                break;
-            }
-            //Edit amount of working workshops of compressor station
-            case 5:
-            {
-                //s.EditCompressorStationWorkhopsInWork();
-                break;
-            }
-            //Save objects to file
-            case 6:
             {
                 SaveToFile(Pipes, Stations);
                 break;
             }
-            //Load objects from file
-            case 7:
+            case 5:
             {
                 LoadFromFile(Pipes, Stations);
                 break;
@@ -103,10 +96,6 @@ int main()
             case 0:
             {
                 return 0;
-            }
-            default:
-            {
-                cout << "Wrong action" << endl << endl;
             }
         }
     }

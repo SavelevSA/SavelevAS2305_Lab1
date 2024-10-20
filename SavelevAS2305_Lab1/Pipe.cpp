@@ -44,33 +44,17 @@ istream& operator >> (istream& in, Pipe& p)
 {
     p.id = ++p.maxId;
     cout << "Enter pipe name: ";
-    in >> ws;
-    getline(in, p.Name);
-
+    INPUT_LINE(in, p.Name);
 
     cout << "Enter pipe length: ";
-    while (!(in >> p.Length) || p.Length <= 0)
-    {
-        ClearInput();
-        cout << "Enter pipe length: ";
-    }
-
+    p.Length = GetCorrectNumber(100, 1500);
 
     cout << "Enter pipe diameter: ";
-    while (!(in >> p.Diameter) || p.Diameter <= 0)
-    {
-        ClearInput();
-        cout << "Enter pipe diameter: ";
-    }
-
+    p.Diameter = GetCorrectNumber(200, 700);
 
     cout << "Set InRepair state: ";
-    while (!(in >> p.InRepair))
-    {
-        ClearInput();
-        cout << "Set InRepair state: ";
-    }
-    cout << "\n";
+    p.InRepair = GetCorrectNumber(0, 1);
+
     return in;
 }
 

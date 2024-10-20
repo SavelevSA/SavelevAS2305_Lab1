@@ -43,30 +43,17 @@ istream& operator >> (istream& in, CompressorStation& s)
 {
     s.id = ++s.maxId;
     cout << "Enter compressor station name: ";
-    in >> ws;
-    getline(in, s.Name);
-
+    INPUT_LINE(in, s.Name);
+  
     cout << "Enter amount of compressor station workshops: ";
-    while (!(in >> s.AmountOfWorkshops) || s.AmountOfWorkshops <= 0)
-    {
-        ClearInput();
-        cout << "Enter amount of compressor station workshops: ";
-    }
+    s.AmountOfWorkshops = GetCorrectNumber(1, 90);
 
     cout << "Enter amount of working compressor station workshops: ";
-    while (!(in >> s.WorkshopsInWork) || s.WorkshopsInWork < 0 || s.WorkshopsInWork > s.AmountOfWorkshops)
-    {
-        ClearInput();
-        cout << "Enter amount of working compressor station workshops: ";
-    }
+    s.WorkshopsInWork = GetCorrectNumber(0, s.AmountOfWorkshops);
 
     cout << "Enter effeciency level of compressor station: ";
-    while (!(in >> s.EfficiencyLevel) || s.EfficiencyLevel < 0 || s.EfficiencyLevel > 100)
-    {
-        ClearInput();
-        cout << "Enter effeciency level of compressor station: ";
-    }
-    cout << "\n";
+    s.EfficiencyLevel = GetCorrectNumber(0, 100);
+
     return in;
 }
 
