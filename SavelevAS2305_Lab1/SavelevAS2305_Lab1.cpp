@@ -31,7 +31,7 @@ int main()
             {
             case 1:
             {
-                CreatePipe(Pipes);
+                CreateObject(Pipes);
                 break;
             }
             case 2:
@@ -58,7 +58,7 @@ int main()
             {
             case 1:
             {
-                CreateCompressorStation(Stations);
+                CreateObject(Stations);
                 break;
             }
             case 2:
@@ -78,8 +78,8 @@ int main()
         }
             case 3:
             {
-                PrintPipes(Pipes);
-                PrintCompressorStations(Stations);
+                PrintObject(Pipes);
+                PrintObject(Stations);
                 break;
             }
             case 4:

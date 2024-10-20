@@ -5,57 +5,6 @@
 
 using namespace std;
 
-
-unordered_map<int, Pipe> CreatePipe(unordered_map<int, Pipe>& Pipes)
-{
-    Pipe p;
-
-    cin >> p;
-    Pipes.emplace(p.GetId(), p);
-    return Pipes;
-}
-
-void PrintPipes(const unordered_map<int, Pipe>& Pipes)
-{
-    if (Pipes.size() == 0)
-    {
-        cout << "There is no pipes" << endl;
-    }
-    else
-    {
-        for (const auto& pipe : Pipes)
-        {
-            cout << pipe.second;
-        }
-    }
-}
-
-
-unordered_map<int, CompressorStation> CreateCompressorStation(unordered_map<int, CompressorStation>& Stations)
-{
-    CompressorStation p;
-
-    cin >> p;
-    Stations.emplace(p.GetId(), p);
-    return Stations;
-}
-
-void PrintCompressorStations(const unordered_map<int, CompressorStation>& Stations)
-{
-    if (Stations.size() == 0)
-    {
-        cout << "There is no stations" << endl;
-    }
-    else
-    {
-        for (const auto& station : Stations)
-        {
-            cout << station.second;
-        }
-    }
-}
-
-
 void SaveToFile(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, CompressorStation>& Stations)
 {
     ofstream fout;
@@ -87,29 +36,6 @@ void SaveToFile(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, 
     }
 }
 
-
-unordered_map<int, Pipe> LoadPipe(unordered_map<int, Pipe>& Pipes, int count, ifstream& fin)
-{
-    for (int i = 0; i < count; i++)
-    {
-        Pipe p;
-        fin >> p;
-        Pipes.emplace(p.GetId(), p);
-    }
-    return Pipes;
-}
-
-unordered_map<int, CompressorStation> LoadCompressorStation(unordered_map<int, CompressorStation>& Stations, int count, ifstream& fin)
-{
-    for (int i = 0; i < count; i++)
-    {
-        CompressorStation s;
-        fin >> s;
-        Stations.emplace(s.GetId(), s);
-    }
-    return Stations;
-}
-
 void LoadFromFile(unordered_map<int, Pipe>& Pipes, unordered_map<int, CompressorStation>& Stations)
 {
     ifstream fin;
@@ -129,8 +55,8 @@ void LoadFromFile(unordered_map<int, Pipe>& Pipes, unordered_map<int, Compressor
         int CountOfCS;
         fin >> CountOfCS;
 
-        LoadPipe(Pipes, CountOfPipes, fin);
-        LoadCompressorStation(Stations, CountOfCS, fin);
+        LoadObject(Pipes, CountOfPipes, fin);
+        LoadObject(Stations, CountOfCS, fin);
     }
     fin.close();
     cout << "Data successfully loaded" << endl;

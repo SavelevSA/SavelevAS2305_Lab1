@@ -45,13 +45,13 @@ T GetCorrectNumber(T min, T max)
     return x;
 }
 
-void ClearChoosedPipes(set<int>& PipeIds)
+void ClearChoosedPipes(unordered_set<int>& PipeIds)
 {
     PipeIds.clear();
     cout << "Filter successfully cleraed" << endl;
 }
 
-void ClearChoosedStations(set<int>& StationIds)
+void ClearChoosedStations(unordered_set<int>& StationIds)
 {
     StationIds.clear();
     cout << "Filter successfully cleraed" << endl;
@@ -70,7 +70,7 @@ bool CheckByStatement(Pipe& p, bool param)
 }
 
 template<typename T>
-void FindPipesByFilter(unordered_map<int, Pipe>& Pipes, FilterP<T> f, T param, set<int>& PipeIds)
+void FindPipesByFilter(unordered_map<int, Pipe>& Pipes, FilterP<T> f, T param, unordered_set<int>& PipeIds)
 {
     for (auto& p : Pipes)
     {
@@ -83,15 +83,15 @@ void FindPipesByFilter(unordered_map<int, Pipe>& Pipes, FilterP<T> f, T param, s
 }
 
 
-using EADP = void(*)(unordered_map<int, Pipe>& Pipes, set<int>& PipeIds);
-void EditPipe(unordered_map<int, Pipe>& Pipes, set<int>& PipeIds)
+using EADP = void(*)(unordered_map<int, Pipe>& Pipes, unordered_set<int>& PipeIds);
+void EditPipe(unordered_map<int, Pipe>& Pipes, unordered_set<int>& PipeIds)
 {
     for (auto& id : PipeIds)
     {
         Pipes[id].EditPipeInRepair();
     }
 }
-void Delete(unordered_map<int, Pipe>& Pipes, set<int>& PipeIds)
+void Delete(unordered_map<int, Pipe>& Pipes, unordered_set<int>& PipeIds)
 {
     for (auto& id : PipeIds)
     {
@@ -99,7 +99,7 @@ void Delete(unordered_map<int, Pipe>& Pipes, set<int>& PipeIds)
     }
 }
 
-void EditAndDelete(unordered_map<int, Pipe>& Pipes, EADP f, set<int>& PipeIds)
+void EditAndDelete(unordered_map<int, Pipe>& Pipes, EADP f, unordered_set<int>& PipeIds)
 {
     if (PipeIds.empty())
     {
@@ -119,7 +119,7 @@ void EditAndDelete(unordered_map<int, Pipe>& Pipes, EADP f, set<int>& PipeIds)
 
 void ChooseAndFilterPipes(unordered_map<int, Pipe>& Pipes)
 {
-    set<int> PipeIds;
+    unordered_set<int> PipeIds;
     string NameFilter;
     bool statement;
     bool cycle = 1;
@@ -213,7 +213,7 @@ bool CheckByPercent(CompressorStation& s, int param)
 }
 
 template<typename T>
-void FindStationsByFilter(unordered_map<int, CompressorStation>& Stations, FilterS<T> f, T param, set<int>& StationIds)
+void FindStationsByFilter(unordered_map<int, CompressorStation>& Stations, FilterS<T> f, T param, unordered_set<int>& StationIds)
 {
     for (auto& s : Stations)
     {
@@ -226,15 +226,15 @@ void FindStationsByFilter(unordered_map<int, CompressorStation>& Stations, Filte
 }
 
 
-using EADS = void(*)(unordered_map<int, CompressorStation>& Stations, set<int>& StationIds, const char sign);
-void EditStations(unordered_map<int, CompressorStation>& Stations, set<int>& StationIds, const char sign)
+using EADS = void(*)(unordered_map<int, CompressorStation>& Stations, unordered_set<int>& StationIds, const char sign);
+void EditStations(unordered_map<int, CompressorStation>& Stations, unordered_set<int>& StationIds, const char sign)
 {
     for (auto& id : StationIds)
     {
         Stations[id].EditWorkingWorkshops(sign);
     }
 }
-void DeleteS(unordered_map<int, CompressorStation>& Stations, set<int>& StationIds, const char sign)
+void DeleteS(unordered_map<int, CompressorStation>& Stations, unordered_set<int>& StationIds, const char sign)
 {
     for (auto& id : StationIds)
     {
@@ -242,7 +242,7 @@ void DeleteS(unordered_map<int, CompressorStation>& Stations, set<int>& StationI
     }
 }
 
-void EditAndDeleteS(unordered_map<int, CompressorStation>& Stations, EADS f, set<int>& StationIds, const char sign)
+void EditAndDeleteS(unordered_map<int, CompressorStation>& Stations, EADS f, unordered_set<int>& StationIds, const char sign)
 {
     if (StationIds.empty())
     {
@@ -260,7 +260,7 @@ void EditAndDeleteS(unordered_map<int, CompressorStation>& Stations, EADS f, set
 
 void ChooseAndFilterStations(unordered_map<int, CompressorStation>& Stations)
 {
-    set<int> StationIds;
+    unordered_set<int> StationIds;
     string NameFilter;
     int percent = 0;
     bool cycle = 1;

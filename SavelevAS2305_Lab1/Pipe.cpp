@@ -13,7 +13,6 @@ Pipe::Pipe()
     InRepair = 0;
 }
 
-
 ifstream& operator >> (ifstream& fin, Pipe& p)
 {
     fin >> p.id;
