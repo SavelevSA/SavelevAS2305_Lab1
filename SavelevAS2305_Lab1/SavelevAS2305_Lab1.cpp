@@ -5,146 +5,69 @@
 
 using namespace std;
 
-void MainMenu()
-{
-    cout << "1. Open pipe menu" << endl
-        << "2. Open station menu" << endl
-        << "3. Print pipe and compressor station" << endl
-        << "4. Edit InRepair state of pipe" << endl
-        << "5. Edit amount of working workshops of compressor station" << endl
-        << "6. Save objects to file" << endl
-        << "7. Load objects from file" << endl
-        << "0. Exit" << endl
-        << "Choose action: ";
-}
-
-void PipeMenu()
-{
-    cout << "1. Create pipe" << endl
-        << "2. Choose pipes with filter" << endl
-        << "3. Choose pipe" << endl
-        << "4. Print choosed pipes" << endl
-        << "5. Delete choosed pipes" << endl
-        << "6. Clear choosed pipes" << endl
-        << "7. Edit InRepair statement of choosed pipes" << endl
-        << "0. Back" << endl
-        << "Choose action: ";
-}
-
-void StationMenu()
-{
-    cout << "1. Create station" << endl
-        << "2. Choose stations with filter" << endl
-        << "3. Choose station" << endl
-        << "4. Print choosed stations" << endl
-        << "5. Delete choosed pipes" << endl
-        << "6. Clear choosed stations" << endl
-        << "7. +1 working worksop to choosed stations" << endl
-        << "8. -1 working worksop to choosed stations" << endl
-        << "0. Back" << endl
-        << "Choose action: ";
-}
-
-
 int main()
 {
-    Pipe p;
-    CompressorStation s;
-
     unordered_map<int, Pipe> Pipes;
     unordered_map<int, CompressorStation> Stations;
-
-    unordered_map<int, Pipe> FilteredPipes;
-    unordered_map<int, CompressorStation> FilteredStations;
 
     while (1)
     {
         MainMenu();
         switch (GetCorrectNumber(0, 7))
         {
-            //Input pipe
+        case 1:
+        {
+            PipeMenu();
+
+            switch (GetCorrectNumber(0, 2))
+            {
             case 1:
             {
-                while (1)
-                {
-                    PipeMenu();
-                    int PipeSelection;
-                    PipeSelection = GetCorrectNumber(0, 7);
-
-                    if (PipeSelection == 0)
-                        break;
-                    switch (PipeSelection)
-                    {
-                        case 1:
-                            CreatePipe(Pipes);
-                            break;
-                        case 2:
-                            FilterPipes(Pipes, FilteredPipes);
-                            break;
-                        case 3:
-                            ChoosePipe(FilteredPipes, Pipes);
-                            break;
-                        case 4:
-                            PrintPipes(FilteredPipes);
-                            break;
-                        case 5:
-                            DeletePipes(FilteredPipes, Pipes);
-                            break;
-                        case 6:
-                            ClearChoosedPipes(FilteredPipes);
-                            break;
-                        case 7:
-                            EditPipes(FilteredPipes, Pipes);
-                            break;
-                        default:
-                            cout << "Wrong action" << endl << endl;
-                    }
-                }
+                CreatePipe(Pipes);
                 break;
             }
-            //Input compressor station
             case 2:
             {
-                while (1)
+                if (Pipes.empty())
                 {
-                    StationMenu();
-                    int StationSelection;
-                    StationSelection = GetCorrectNumber(0, 6);
-
-                    if (StationSelection == 0)
-                        break;
-                    switch (StationSelection)
-                    {
-                    case 1:
-                        CreateCompressorStation(Stations);
-                        break;
-                    case 2:
-                        FilterStations(Stations, FilteredStations);
-                        break;
-                    case 3:
-                        ChooseStation(FilteredStations, Stations);
-                        break;
-                    case 4:
-                        PrintCompressorStations(FilteredStations);
-                        break;
-                    case 5:
-                        DeleteStations(FilteredStations, Stations);
-                        break;
-                    case 6:
-                        ClearChoosedStations(FilteredStations);
-                        break;
-                    case 7:
-                        EditStations(FilteredStations, Stations, char("+"));
-                        break;
-                    case 8:
-                        EditStations(FilteredStations, Stations, char("-"));
-                        break;
-                    default:
-                        cout << "Wrong action" << endl << endl;
-                    }
+                    cout << "There is no pipes to interact with" << endl << endl;
                 }
+                else
+                    ChooseAndFilterPipes(Pipes);
                 break;
             }
+            case 0:
+                break;
+            }
+        break;
+        }
+            //Input compressor station
+        case 2:
+        {
+            StationMenu();
+
+            switch (GetCorrectNumber(0, 2))
+            {
+            case 1:
+            {
+                CreateCompressorStation(Stations);
+                break;
+            }
+            case 2:
+            {
+                if (Stations.empty())
+                {
+                    cout << "There is no stations to interact with" << endl << endl;
+                }
+                else
+                    ChooseAndFilterStations(Stations);
+                break;
+            }
+            case 0:
+                break;
+            }
+        break;
+        }
             //Print pipe and compressor station
             case 3:
             {

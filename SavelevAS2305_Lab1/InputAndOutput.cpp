@@ -15,7 +15,7 @@ unordered_map<int, Pipe> CreatePipe(unordered_map<int, Pipe>& Pipes)
     return Pipes;
 }
 
-void PrintPipes(unordered_map<int, Pipe>& Pipes)
+void PrintPipes(const unordered_map<int, Pipe>& Pipes)
 {
     if (Pipes.size() == 0)
     {
@@ -40,7 +40,7 @@ unordered_map<int, CompressorStation> CreateCompressorStation(unordered_map<int,
     return Stations;
 }
 
-void PrintCompressorStations(unordered_map<int, CompressorStation>& Stations)
+void PrintCompressorStations(const unordered_map<int, CompressorStation>& Stations)
 {
     if (Stations.size() == 0)
     {
@@ -56,7 +56,7 @@ void PrintCompressorStations(unordered_map<int, CompressorStation>& Stations)
 }
 
 
-void SaveToFile(unordered_map<int, Pipe>& Pipes, unordered_map<int, CompressorStation>& Stations)
+void SaveToFile(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, CompressorStation>& Stations)
 {
     ofstream fout;
     string file;
