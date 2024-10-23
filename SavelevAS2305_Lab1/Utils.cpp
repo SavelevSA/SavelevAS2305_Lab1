@@ -62,7 +62,7 @@ template<typename T>
 using FilterP = bool(*)(Pipe& p, T param);
 bool CheckByName(Pipe& p, string param)
 {
-    return !p.GetName().find(param);
+    return p.GetName().find(param) != string::npos;
 }
 bool CheckByStatement(Pipe& p, bool param)
 {
@@ -101,13 +101,30 @@ void Delete(unordered_map<int, Pipe>& Pipes, unordered_set<int>& PipeIds)
 
 void EditAndDelete(unordered_map<int, Pipe>& Pipes, EADP f, unordered_set<int>& PipeIds)
 {
+    unordered_set<int> SelectedIds;
     if (PipeIds.empty())
     {
         cout << endl << "There is no choosed pipes to interact with" << endl;
     }
     else
     {
-        f(Pipes, PipeIds);
+        cout << endl << "Enter an id of pipes to interact" << endl
+            << "To stop choosing enter 0: " << endl;
+        while (1)
+        {
+            int ChoosedId = GetCorrectNumber(0, int(Pipes.size()));
+            if (ChoosedId == 0)
+                break;
+            if (PipeIds.contains(ChoosedId))
+            {
+                SelectedIds.emplace(ChoosedId);
+            }
+            else
+                cout << "Therse is no pipe with this id" << endl;
+        }
+        
+        
+        f(Pipes, SelectedIds);
         if (f == EditPipe)
             cout << "InRepair state of pipes successfully changed" << endl;
         else
@@ -244,17 +261,35 @@ void DeleteS(unordered_map<int, CompressorStation>& Stations, unordered_set<int>
 
 void EditAndDeleteS(unordered_map<int, CompressorStation>& Stations, EADS f, unordered_set<int>& StationIds, const char sign)
 {
+    unordered_set<int> SelectedIds;
     if (StationIds.empty())
     {
         cout << endl << "There is no choosed stations to interact with" << endl;
     }
     else
     {
-        f(Stations, StationIds, sign);
-        if (f == DeleteS)
-            cout << "Stations successfully deleted" << endl;
+        cout << endl << "Enter an id of stations to interact" << endl
+            << "To stop choosing enter 0: " << endl;
+        while (1)
+        {
+            int ChoosedId = GetCorrectNumber(0, int(Stations.size()));
+            if (ChoosedId == 0)
+                break;
+            if (StationIds.contains(ChoosedId))
+            {
+                SelectedIds.emplace(ChoosedId);
+            }
+            else
+                cout << "Therse is no station with this id" << endl;
+        }
+
+
+        f(Stations, SelectedIds, sign);
+        if (f == EditStations)
+            cout << "InRepair state of stations successfully changed" << endl;
         else
-            cout << "Amount of working workstations successfully edited" << endl;
+            cout << "Stations successfully deleted" << endl;
+
     }
 }
 

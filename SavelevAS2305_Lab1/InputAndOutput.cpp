@@ -57,7 +57,10 @@ void LoadFromFile(unordered_map<int, Pipe>& Pipes, unordered_map<int, Compressor
 
         LoadObject(Pipes, CountOfPipes, fin);
         LoadObject(Stations, CountOfCS, fin);
+        cout << "Data successfully loaded" << endl;
     }
+    else
+        cout << "There is no file with that name" << endl;
     fin.close();
-    cout << "Data successfully loaded" << endl;
+    
 }
